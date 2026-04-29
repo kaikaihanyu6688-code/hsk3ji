@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSK 3급 마스터</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800;900&family=Noto+Sans+SC:wght@400;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1C1917;
+  --paper: #FAF7F2;
+  --warm: #F5F0E8;
+  --red: #C0392B;
+  --gold: #D4A017;
+  --gold2: #F1C40F;
+  --teal: #16A085;
+  --slate: #2C3E50;
+  --muted: #7F8C8D;
+  --border: rgba(28,25,23,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+header{
+  background:var(--ink);color:var(--paper);
+  padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;border-bottom:3px solid var(--red);
+}
+.logo{display:flex;align-items:center;gap:14px;}
+.logo-char{font-family:'Noto Sans SC';font-size:28px;font-weight:900;color:var(--gold2);text-shadow:0 0 20px rgba(241,196,15,0.4);}
+.logo-text{font-family:'Syne';font-size:17px;font-weight:800;}
+.logo-sub{font-size:10px;color:rgba(250,247,242,0.45);margin-top:2px;letter-spacing:1px;text-transform:uppercase;}
+.hdr-scores{display:flex;gap:10px;}
+.hdr-score{background:rgba(250,247,242,0.08);border:1px solid rgba(250,247,242,0.14);border-radius:8px;padding:6px 14px;text-align:center;}
+.hdr-score-n{font-family:'Syne';font-size:18px;font-weight:800;color:var(--gold2);}
+.hdr-score-l{font-size:9px;color:rgba(250,247,242,0.45);letter-spacing:0.8px;text-transform:uppercase;margin-top:1px;}
+nav{background:var(--warm);border-bottom:2px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+nav button{flex-shrink:0;padding:13px 16px;border:none;background:transparent;color:var(--muted);font-family:'Noto Sans KR';font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;}
+nav button.on{color:var(--red);border-bottom-color:var(--red);}
+nav button:hover:not(.on){color:var(--ink);}
+.sec{display:none;max-width:700px;margin:0 auto;padding:24px 18px;}
+.sec.on{display:block;animation:up 0.3s ease;}
+@keyframes up{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.sec-head{font-family:'Syne';font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.sec-head em{font-style:normal;background:var(--red);color:white;font-size:11px;padding:3px 9px;border-radius:4px;font-family:'Noto Sans KR';letter-spacing:0.5px;}
+
+/* FLASHCARD */
+.fc-cat-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.cchip{padding:5px 12px;border-radius:4px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR';transition:all 0.18s;}
+.cchip.on{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+.fc-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.fc-prog{font-size:12px;color:var(--muted);}
+.pbar{height:4px;background:rgba(28,25,23,0.1);border-radius:99px;overflow:hidden;margin-bottom:20px;}
+.pbar-fill{height:100%;background:var(--red);border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;margin-bottom:16px;}
+.card-inner{position:relative;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);cursor:pointer;border-radius:18px;height:260px;}
+.card-inner.flip{transform:rotateY(180deg);}
+.card-f,.card-b{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;padding:28px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(28,25,23,0.12);}
+.card-f{background:var(--ink);border:2px solid rgba(250,247,242,0.06);}
+.card-b{background:var(--warm);border:2px solid var(--border);transform:rotateY(180deg);}
+.card-zh{font-family:'Noto Sans SC';font-weight:900;color:var(--gold2);line-height:1;text-shadow:0 2px 24px rgba(241,196,15,0.2);text-align:center;}
+.card-zh.sz1{font-size:72px;}
+.card-zh.sz2{font-size:54px;}
+.card-zh.sz3{font-size:40px;}
+.card-hint{font-size:11px;color:rgba(250,247,242,0.3);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;}
+.card-badge{position:absolute;top:16px;right:16px;font-size:10px;font-weight:700;color:rgba(250,247,242,0.3);background:rgba(250,247,242,0.06);border-radius:4px;padding:3px 8px;letter-spacing:0.5px;}
+.card-ko{font-size:22px;font-weight:800;color:var(--ink);margin-bottom:8px;text-align:center;}
+.card-py{font-size:14px;color:var(--muted);margin-bottom:12px;font-style:italic;}
+.card-ex{font-family:'Noto Sans SC';font-size:14px;color:var(--slate);line-height:1.7;text-align:center;margin-bottom:4px;}
+.card-exko{font-size:12px;color:var(--muted);text-align:center;line-height:1.6;}
+.ex-hl{color:var(--red);font-weight:700;}
+.fc-actions{display:flex;gap:10px;margin-bottom:10px;}
+.fcb{flex:1;padding:13px;border-radius:10px;border:none;font-family:'Noto Sans KR';font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s;}
+.fcb-f{background:var(--warm);border:1.5px solid var(--border);color:var(--muted);}
+.fcb-f:hover{background:var(--ink);color:var(--paper);}
+.fcb-n{background:rgba(192,57,43,0.08);border:1.5px solid rgba(192,57,43,0.2);color:var(--red);}
+.fcb-n:hover{background:var(--red);color:white;}
+.fcb-y{background:rgba(22,160,133,0.08);border:1.5px solid rgba(22,160,133,0.2);color:var(--teal);}
+.fcb-y:hover{background:var(--teal);color:white;}
+.fc-rate{display:none;}
+.fc-rate.show{display:flex;}
+
+/* QUIZ */
+.qtype-row{display:flex;gap:8px;margin-bottom:18px;}
+.qtype-btn{flex:1;padding:9px 6px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Noto Sans KR';font-size:12px;font-weight:700;cursor:pointer;transition:all 0.18s;}
+.qtype-btn.on{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+.qbox{background:white;border-radius:18px;padding:28px 22px;border:1.5px solid var(--border);box-shadow:0 2px 16px rgba(28,25,23,0.06);}
+.q-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.q-word{font-family:'Noto Sans SC';font-weight:900;color:var(--ink);margin-bottom:22px;line-height:1.1;}
+.q-word.big{font-size:54px;}
+.q-word.med{font-size:38px;}
+.q-word.ko{font-family:'Noto Sans KR';font-size:24px;font-weight:800;}
+.q-word.sent{font-family:'Noto Sans SC';font-size:18px;font-weight:700;line-height:1.8;}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.q-opt{padding:14px 10px;border-radius:12px;border:1.5px solid var(--border);background:var(--warm);color:var(--ink);font-family:'Noto Sans SC';font-size:16px;font-weight:700;cursor:pointer;transition:all 0.18s;text-align:center;}
+.q-opt.ko-opt{font-family:'Noto Sans KR';font-size:13px;}
+.q-opt:hover:not(:disabled){border-color:var(--slate);background:white;transform:scale(1.02);}
+.q-opt.ok{background:rgba(22,160,133,0.1);border-color:var(--teal);color:var(--teal);}
+.q-opt.no{background:rgba(192,57,43,0.08);border-color:var(--red);color:var(--red);}
+.q-fb{border-radius:10px;padding:12px 16px;font-weight:700;font-size:14px;margin-top:14px;display:none;}
+.q-fb.show{display:block;animation:pop 0.25s ease;}
+@keyframes pop{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.q-fb.ok{background:rgba(22,160,133,0.1);color:var(--teal);}
+.q-fb.no{background:rgba(192,57,43,0.08);color:var(--red);}
+.btn-next{width:100%;padding:13px;border:none;border-radius:10px;background:var(--ink);color:var(--paper);font-family:'Noto Sans KR';font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;display:none;transition:all 0.18s;}
+.btn-next.show{display:block;}
+.btn-next:hover{background:var(--red);}
+
+/* SENTENCE */
+.sent-card{background:white;border-radius:16px;padding:22px 20px;margin-bottom:14px;border:1.5px solid var(--border);box-shadow:0 1px 8px rgba(28,25,23,0.05);}
+.sent-tag{display:inline-block;font-size:10px;font-weight:700;background:var(--ink);color:var(--paper);padding:3px 9px;border-radius:4px;letter-spacing:0.5px;margin-bottom:12px;}
+.sent-zh{font-family:'Noto Sans SC';font-size:20px;font-weight:700;color:var(--ink);line-height:1.7;margin-bottom:6px;}
+.sent-zh .hl{color:var(--red);}
+.sent-note{font-size:11px;color:var(--muted);margin-bottom:10px;font-style:italic;line-height:1.5;}
+.sent-ko{font-size:14px;font-weight:600;color:var(--teal);padding:8px 12px;border-radius:8px;background:rgba(22,160,133,0.07);cursor:pointer;user-select:none;transition:filter 0.25s;}
+.sent-ko.hide{filter:blur(5px);}
+.reveal-hint{font-size:11px;color:var(--muted);margin-top:5px;cursor:pointer;}
+
+/* FILL */
+.fill-box{background:white;border-radius:16px;padding:26px 22px;border:1.5px solid var(--border);box-shadow:0 1px 8px rgba(28,25,23,0.05);}
+.fill-num{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-bottom:14px;text-transform:uppercase;}
+.fill-sent{font-family:'Noto Sans SC';font-size:20px;font-weight:700;line-height:1.8;color:var(--ink);margin-bottom:8px;}
+.fill-blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--gold);color:var(--gold);font-weight:900;text-align:center;padding:0 4px;transition:all 0.3s;}
+.fill-ko{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+.fill-choices{display:flex;flex-wrap:wrap;gap:10px;}
+.fill-opt{padding:10px 20px;border-radius:8px;border:1.5px solid var(--border);background:var(--warm);font-family:'Noto Sans SC';font-size:20px;font-weight:700;color:var(--ink);cursor:pointer;transition:all 0.18s;}
+.fill-opt:hover:not(:disabled){border-color:var(--gold);background:rgba(212,160,23,0.08);transform:scale(1.04);}
+.fill-opt.ok{background:rgba(22,160,133,0.1);border-color:var(--teal);color:var(--teal);}
+.fill-opt.no{background:rgba(192,57,43,0.08);border-color:var(--red);color:var(--red);animation:shk 0.35s;}
+@keyframes shk{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.fill-fb{font-size:13px;font-weight:700;margin-top:12px;display:none;}
+.fill-fb.show{display:block;}
+.fill-fb.ok{color:var(--teal);}
+.fill-fb.no{color:var(--red);}
+
+/* WORD LIST */
+.search{width:100%;padding:11px 16px;border-radius:10px;border:1.5px solid var(--border);background:white;font-family:'Noto Sans KR';font-size:14px;color:var(--ink);outline:none;margin-bottom:16px;}
+.search:focus{border-color:var(--ink);}
+.search::placeholder{color:var(--muted);}
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.wtile{background:white;border-radius:12px;padding:16px 12px;border:1.5px solid var(--border);text-align:center;cursor:pointer;transition:all 0.18s;}
+.wtile:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 4px 12px rgba(28,25,23,0.1);}
+.wtile-zh{font-family:'Noto Sans SC';font-size:28px;font-weight:900;color:var(--ink);margin-bottom:4px;}
+.wtile-py{font-size:11px;font-style:italic;color:var(--teal);margin-bottom:3px;display:none;}
+.wtile:hover .wtile-py{display:block;}
+.wtile-ko{font-size:12px;font-weight:700;color:var(--muted);}
+.wtile-cat{font-size:10px;color:rgba(127,140,141,0.55);margin-top:3px;}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.stat-box{background:white;border-radius:14px;padding:20px 16px;border:1.5px solid var(--border);text-align:center;}
+.stat-n{font-family:'Syne';font-size:34px;font-weight:800;color:var(--ink);}
+.stat-l{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:0.5px;}
+.mrow{background:white;border-radius:14px;padding:18px 16px;border:1.5px solid var(--border);margin-bottom:10px;}
+.mrow-top{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:8px;}
+.mbar{background:rgba(28,25,23,0.08);border-radius:99px;height:8px;overflow:hidden;}
+.mfill{height:100%;border-radius:99px;transition:width 0.6s ease;}
+.btn-reset{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:transparent;font-family:'Noto Sans KR';font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;margin-top:8px;transition:all 0.18s;}
+.btn-reset:hover{background:var(--red);border-color:var(--red);color:white;}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:var(--paper);border-radius:10px;padding:10px 22px;font-size:13px;font-weight:700;transition:transform 0.28s;z-index:999;white-space:nowrap;pointer-events:none;}
+.toast.on{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:480px){
+  .q-opts{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:1fr;}
+  .hdr-scores{gap:6px;}
+  .hdr-score{padding:5px 10px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-char">汉</div>
+    <div>
+      <div class="logo-text">HSK 3급 마스터</div>
+      <div class="logo-sub">병음 없이 읽고 이해하기</div>
+    </div>
+  </div>
+  <div class="hdr-scores">
+    <div class="hdr-score"><div class="hdr-score-n" id="hPt">0</div><div class="hdr-score-l">포인트</div></div>
+    <div class="hdr-score"><div class="hdr-score-n" id="hSt">0</div><div class="hdr-score-l">연속</div></div>
+  </div>
+</header>
+
+<nav>
+  <button class="on" onclick="go('fc')">📇 단어카드</button>
+  <button onclick="go('quiz')">🎯 퀴즈</button>
+  <button onclick="go('sent')">📝 문장</button>
+  <button onclick="go('fill')">✏️ 빈칸</button>
+  <button onclick="go('wl')">📚 단어장</button>
+  <button onclick="go('stat')">📊 통계</button>
+</nav>
+
+<!-- FLASHCARD -->
+<div id="fc" class="sec on">
+  <div class="sec-head">📇 단어 카드 <em>병음 없이 읽기</em></div>
+  <div class="fc-cat-row" id="catRow"></div>
+  <div class="fc-meta"><span class="fc-prog" id="fcProg">0 / 0</span></div>
+  <div class="pbar"><div class="pbar-fill" id="pbarFill" style="width:0%"></div></div>
+  <div class="card-wrap">
+    <div class="card-inner" id="cardInner" onclick="fcFlip()">
+      <div class="card-f">
+        <div class="card-badge" id="cardBadge"></div>
+        <div class="card-hint">탭해서 뜻 확인 →</div>
+        <div class="card-zh sz1" id="cardZh">—</div>
+      </div>
+      <div class="card-b">
+        <div class="card-ko" id="cardKo">—</div>
+        <div class="card-py" id="cardPy">—</div>
+        <div class="card-ex" id="cardEx"></div>
+        <div class="card-exko" id="cardExko"></div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-actions">
+    <button class="fcb fcb-f" onclick="fcFlip()">🔄 뒤집기</button>
+  </div>
+  <div class="fc-actions fc-rate" id="fcRate">
+    <button class="fcb fcb-n" onclick="fcRate(false)">❌ 몰랐어요</button>
+    <button class="fcb fcb-y" onclick="fcRate(true)">✅ 알았어요</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="sec">
+  <div class="sec-head">🎯 퀴즈 <em>한자 읽기 집중</em></div>
+  <div class="qtype-row">
+    <button class="qtype-btn on" onclick="setQT('zh2ko',this)">한자→뜻</button>
+    <button class="qtype-btn" onclick="setQT('ko2zh',this)">뜻→한자</button>
+    <button class="qtype-btn" onclick="setQT('sent',this)">문장 빈칸</button>
+  </div>
+  <div class="qbox" id="quizBox"></div>
+</div>
+
+<!-- SENTENCE -->
+<div id="sent" class="sec">
+  <div class="sec-head">📝 핵심 문장 <em>HSK 3급 수준</em></div>
+  <div id="sentList"></div>
+</div>
+
+<!-- FILL -->
+<div id="fill" class="sec">
+  <div class="sec-head">✏️ 빈칸 채우기 <em>문맥 파악</em></div>
+  <div id="fillBox"></div>
+</div>
+
+<!-- WORD LIST -->
+<div id="wl" class="sec">
+  <div class="sec-head">📚 단어장 <em>마우스 올리면 병음 표시</em></div>
+  <input class="search" id="searchInput" placeholder="한국어, 중국어로 검색…" oninput="filterWL()">
+  <div class="word-grid" id="wordGrid"></div>
+</div>
+
+<!-- STATS -->
+<div id="stat" class="sec">
+  <div class="sec-head">📊 나의 학습 현황</div>
+  <div class="stat-grid">
+    <div class="stat-box"><div class="stat-n" id="s1">0</div><div class="stat-l">총 정답</div></div>
+    <div class="stat-box"><div class="stat-n" id="s2">0</div><div class="stat-l">총 오답</div></div>
+    <div class="stat-box"><div class="stat-n" id="s3">0%</div><div class="stat-l">정답률</div></div>
+    <div class="stat-box"><div class="stat-n" id="s4">0</div><div class="stat-l">포인트</div></div>
+  </div>
+  <div class="mrow"><div class="mrow-top"><span>✅ 완벽히 안다</span><span id="mp1">0%</span></div><div class="mbar"><div class="mfill" id="mf1" style="width:0%;background:var(--teal)"></div></div></div>
+  <div class="mrow"><div class="mrow-top"><span>🟡 어느 정도</span><span id="mp2">0%</span></div><div class="mbar"><div class="mfill" id="mf2" style="width:0%;background:var(--gold)"></div></div></div>
+  <div class="mrow"><div class="mrow-top"><span>🔴 아직 모른다</span><span id="mp3">100%</span></div><div class="mbar"><div class="mfill" id="mf3" style="width:100%;background:var(--red)"></div></div></div>
+  <button class="btn-reset" onclick="doReset()">🔄 통계 초기화</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════ DATA ═══════════════
+const W = [
+  {zh:'搬',py:'bān',ko:'이사하다, 옮기다',cat:'동사',ex:'他们搬到新房子去了。',exko:'그들은 새 집으로 이사했어요.',key:'搬'},
+  {zh:'被',py:'bèi',ko:'~에 의해 당하다 (피동)',cat:'동사',ex:'我的书被他借走了。',exko:'내 책이 그에게 빌려졌어요.',key:'被'},
+  {zh:'比较',py:'bǐjiào',ko:'비교하다 / 비교적',cat:'동사',ex:'两个方案比较一下。',exko:'두 방안을 한번 비교해 보세요.',key:'比较'},
+  {zh:'变化',py:'biànhuà',ko:'변화(하다)',cat:'명사',ex:'这里的变化非常大。',exko:'이곳의 변화가 매우 커요.',key:'变化'},
+  {zh:'超过',py:'chāoguò',ko:'초과하다, 넘다',cat:'동사',ex:'他的分数超过了九十分。',exko:'그의 점수가 90점을 넘었어요.',key:'超过'},
+  {zh:'出现',py:'chūxiàn',ko:'나타나다',cat:'동사',ex:'天空中出现了彩虹。',exko:'하늘에 무지개가 나타났어요.',key:'出现'},
+  {zh:'担心',py:'dānxīn',ko:'걱정하다',cat:'동사',ex:'妈妈总是担心我的安全。',exko:'엄마는 항상 내 안전을 걱정해요.',key:'担心'},
+  {zh:'发现',py:'fāxiàn',ko:'발견하다',cat:'동사',ex:'他发现了一个重要的问题。',exko:'그는 중요한 문제를 발견했어요.',key:'发现'},
+  {zh:'决定',py:'juédìng',ko:'결정하다',cat:'동사',ex:'我们决定明天出发。',exko:'우리는 내일 출발하기로 결정했어요.',key:'决定'},
+  {zh:'举行',py:'jǔxíng',ko:'개최하다, 거행하다',cat:'동사',ex:'学校明天举行运动会。',exko:'학교에서 내일 운동회를 개최해요.',key:'举行'},
+  {zh:'解决',py:'jiějué',ko:'해결하다',cat:'동사',ex:'这个问题很难解决。',exko:'이 문제는 해결하기 매우 어려워요.',key:'解决'},
+  {zh:'了解',py:'liǎojiě',ko:'이해하다, 파악하다',cat:'동사',ex:'你需要先了解情况。',exko:'먼저 상황을 파악해야 해요.',key:'了解'},
+  {zh:'满意',py:'mǎnyì',ko:'만족하다',cat:'동사',ex:'老师对我的作业很满意。',exko:'선생님께서 내 숙제에 매우 만족하셨어요.',key:'满意'},
+  {zh:'使用',py:'shǐyòng',ko:'사용하다',cat:'동사',ex:'请正确使用这个工具。',exko:'이 도구를 올바르게 사용해 주세요.',key:'使用'},
+  {zh:'注意',py:'zhùyì',ko:'주의하다',cat:'동사',ex:'过马路时要注意安全。',exko:'길을 건널 때 안전에 주의해야 해요.',key:'注意'},
+  {zh:'同意',py:'tóngyì',ko:'동의하다',cat:'동사',ex:'大家都同意这个计划。',exko:'모두 이 계획에 동의했어요.',key:'同意'},
+  {zh:'影响',py:'yǐngxiǎng',ko:'영향(을 미치다)',cat:'동사',ex:'天气影响了我们的计划。',exko:'날씨가 우리 계획에 영향을 미쳤어요.',key:'影响'},
+  {zh:'提高',py:'tígāo',ko:'향상시키다, 높이다',cat:'동사',ex:'我想提高我的中文水平。',exko:'나는 중국어 실력을 향상시키고 싶어요.',key:'提高'},
+  {zh:'参加',py:'cānjiā',ko:'참가하다',cat:'동사',ex:'我报名参加了比赛。',exko:'나는 신청해서 대회에 참가했어요.',key:'参加'},
+  {zh:'相信',py:'xiāngxìn',ko:'믿다',cat:'동사',ex:'你要相信自己。',exko:'자신을 믿어야 해요.',key:'相信'},
+  {zh:'需要',py:'xūyào',ko:'필요하다',cat:'동사',ex:'学好汉语需要很长时间。',exko:'중국어를 잘 배우려면 오랜 시간이 필요해요.',key:'需要'},
+  {zh:'成绩',py:'chéngjì',ko:'성적, 성과',cat:'명사',ex:'这次考试我的成绩不好。',exko:'이번 시험에서 내 성적이 좋지 않아요.',key:'成绩'},
+  {zh:'城市',py:'chéngshì',ko:'도시',cat:'명사',ex:'这是一座现代化的城市。',exko:'이것은 현대화된 도시예요.',key:'城市'},
+  {zh:'发展',py:'fāzhǎn',ko:'발전(하다)',cat:'명사',ex:'中国经济发展很快。',exko:'중국 경제는 매우 빠르게 발전하고 있어요.',key:'发展'},
+  {zh:'环境',py:'huánjìng',ko:'환경',cat:'명사',ex:'我们要保护环境。',exko:'우리는 환경을 보호해야 해요.',key:'环境'},
+  {zh:'机会',py:'jīhuì',ko:'기회',cat:'명사',ex:'这是一个很好的机会。',exko:'이것은 매우 좋은 기회예요.',key:'机会'},
+  {zh:'经验',py:'jīngyàn',ko:'경험',cat:'명사',ex:'他有丰富的工作经验。',exko:'그는 풍부한 업무 경험이 있어요.',key:'经验'},
+  {zh:'困难',py:'kùnnán',ko:'어려움 / 어렵다',cat:'명사',ex:'学语言没有捷径，要克服困难。',exko:'언어 학습에는 지름길이 없고, 어려움을 극복해야 해요.',key:'困难'},
+  {zh:'礼物',py:'lǐwù',ko:'선물',cat:'명사',ex:'他送给我一个特别的礼物。',exko:'그는 나에게 특별한 선물을 줬어요.',key:'礼物'},
+  {zh:'历史',py:'lìshǐ',ko:'역사',cat:'명사',ex:'中国有五千年的历史。',exko:'중국은 5천 년의 역사가 있어요.',key:'历史'},
+  {zh:'面试',py:'miànshì',ko:'면접(보다)',cat:'명사',ex:'明天我有一个重要的面试。',exko:'내일 중요한 면접이 있어요.',key:'面试'},
+  {zh:'目的',py:'mùdì',ko:'목적',cat:'명사',ex:'你来中国的目的是什么？',exko:'중국에 온 목적이 무엇이에요?',key:'目的'},
+  {zh:'声音',py:'shēngyīn',ko:'소리, 목소리',cat:'명사',ex:'外面的声音太大，我睡不着。',exko:'밖의 소리가 너무 커서 잠을 잘 수가 없어요.',key:'声音'},
+  {zh:'原因',py:'yuányīn',ko:'원인, 이유',cat:'명사',ex:'你知道他迟到的原因吗？',exko:'그가 지각한 이유를 알아요?',key:'原因'},
+  {zh:'计划',py:'jìhuà',ko:'계획(하다)',cat:'명사',ex:'你有什么计划？',exko:'어떤 계획이 있어요?',key:'计划'},
+  {zh:'关系',py:'guānxi',ko:'관계',cat:'명사',ex:'我们两个人的关系很好。',exko:'우리 두 사람의 관계는 매우 좋아요.',key:'关系'},
+  {zh:'内容',py:'nèiróng',ko:'내용',cat:'명사',ex:'这篇文章的内容很有意思。',exko:'이 글의 내용은 매우 재미있어요.',key:'内容'},
+  {zh:'水平',py:'shuǐpíng',ko:'수준, 실력',cat:'명사',ex:'他的汉语水平很高。',exko:'그의 중국어 수준은 매우 높아요.',key:'水平'},
+  {zh:'态度',py:'tàidu',ko:'태도',cat:'명사',ex:'对工作要有认真的态度。',exko:'일에 대해 진지한 태도를 가져야 해요.',key:'态度'},
+  {zh:'信息',py:'xìnxī',ko:'정보',cat:'명사',ex:'请把最新的信息发给我。',exko:'최신 정보를 나에게 보내 주세요.',key:'信息'},
+  {zh:'作用',py:'zuòyòng',ko:'작용, 역할',cat:'명사',ex:'运动对健康有很大的作用。',exko:'운동은 건강에 매우 큰 역할을 해요.',key:'作用'},
+  {zh:'差不多',py:'chàbuduō',ko:'거의 비슷하다 / 대충',cat:'부사',ex:'这两个答案差不多。',exko:'이 두 답은 거의 비슷해요.',key:'差不多'},
+  {zh:'从来',py:'cónglái',ko:'지금까지 (부정문에 사용)',cat:'부사',ex:'我从来没去过北京。',exko:'나는 지금까지 베이징에 가본 적이 없어요.',key:'从来'},
+  {zh:'马上',py:'mǎshàng',ko:'곧, 즉시',cat:'부사',ex:'你等一下，我马上就来。',exko:'잠깐 기다려요, 내가 곧 갈게요.',key:'马上'},
+  {zh:'继续',py:'jìxù',ko:'계속(하다)',cat:'부사',ex:'请继续说，我在听。',exko:'계속 말해요, 듣고 있어요.',key:'继续'},
+  {zh:'认真',py:'rènzhēn',ko:'진지하다 / 열심히',cat:'형용사',ex:'她学习很认真。',exko:'그녀는 공부를 매우 열심히 해요.',key:'认真'},
+  {zh:'热情',py:'rèqíng',ko:'열정적이다 / 친절하다',cat:'형용사',ex:'中国人非常热情。',exko:'중국인은 매우 열정적이에요.',key:'热情'},
+  {zh:'严格',py:'yángé',ko:'엄격하다',cat:'형용사',ex:'这位老师对学生非常严格。',exko:'이 선생님은 학생들에게 매우 엄격해요.',key:'严格'},
+  {zh:'复杂',py:'fùzá',ko:'복잡하다',cat:'형용사',ex:'这道数学题很复杂。',exko:'이 수학 문제는 매우 복잡해요.',key:'复杂'},
+  {zh:'方便',py:'fāngbiàn',ko:'편리하다',cat:'형용사',ex:'住在地铁站附近很方便。',exko:'지하철역 근처에 사는 것은 매우 편리해요.',key:'方便'},
+  {zh:'整齐',py:'zhěngqí',ko:'가지런하다 / 정돈되다',cat:'형용사',ex:'他把书放得很整齐。',exko:'그는 책을 매우 정돈되게 놓았어요.',key:'整齐'},
+  {zh:'虽然',py:'suīrán',ko:'비록 ~이지만 (虽然A，但是B)',cat:'접속사',ex:'虽然他很忙，但是他还是来了。',exko:'비록 바빴지만 그는 그래도 왔어요.',key:'虽然'},
+  {zh:'因为',py:'yīnwèi',ko:'왜냐하면 (因为A，所以B)',cat:'접속사',ex:'因为他生病了，所以没来上课。',exko:'병이 났기 때문에 수업에 오지 않았어요.',key:'因为'},
+  {zh:'如果',py:'rúguǒ',ko:'만약 ~이면 (如果A，就B)',cat:'접속사',ex:'如果明天下雨，我们就不去了。',exko:'내일 비가 오면 우리는 가지 않을 거예요.',key:'如果'},
+  {zh:'不但',py:'bùdàn',ko:'~일 뿐만 아니라 (不但A，而且B)',cat:'접속사',ex:'他不但聪明，而且非常努力。',exko:'그는 똑똑할 뿐만 아니라 매우 노력해요.',key:'不但'},
+  {zh:'一边',py:'yībiān',ko:'~하면서 (一边A，一边B)',cat:'접속사',ex:'她一边听音乐，一边写作业。',exko:'그녀는 음악을 들으면서 숙제를 해요.',key:'一边'},
+  {zh:'除了',py:'chúle',ko:'~을 제외하고 (除了A以外)',cat:'접속사',ex:'除了数学以外，他什么都好。',exko:'수학을 제외하고 그는 무엇이든 잘해요.',key:'除了'},
+];
+
+const S = [
+  {zh:'虽然这道题很难，但是我不打算放弃。',py:'Suīrán zhè dào tí hěn nán, dànshì wǒ bù dǎsuàn fàngqì.',ko:'비록 이 문제가 어렵지만 포기할 생각은 없어요.',tag:'양보 표현',key:'虽然…但是',note:'虽然 A，但是 B ▶ "비록 A이지만 B"'},
+  {zh:'因为他最近压力很大，所以睡眠不好。',py:'Yīnwèi tā zuìjìn yālì hěn dà, suǒyǐ shuìmián bù hǎo.',ko:'최근 스트레스가 심하기 때문에 수면이 좋지 않아요.',tag:'인과 표현',key:'因为…所以',note:'因为 A，所以 B ▶ "A이기 때문에 B하다"'},
+  {zh:'如果你继续这样下去，成绩就会越来越差。',py:'Rúguǒ nǐ jìxù zhèyàng xiàqù, chéngjì jiù huì yuè lái yuè chà.',ko:'계속 이렇게 하면 성적이 점점 나빠질 거예요.',tag:'가정 표현',key:'如果…就',note:'越来越 + 형용사 ▶ "점점 더 ~해지다"'},
+  {zh:'他不但解决了这个困难，而且还帮助了别人。',py:'Tā bùdàn jiějuéle zhège kùnnán, érqiě hái bāngzhùle biérén.',ko:'그는 이 어려움을 해결했을 뿐만 아니라 다른 사람도 도왔어요.',tag:'점층 표현',key:'不但…而且',note:'不但 A，而且 B ▶ "A일 뿐만 아니라 B도"'},
+  {zh:'他的作业被老师表扬了。',py:'Tā de zuòyè bèi lǎoshī biǎoyáng le.',ko:'그의 숙제가 선생님께 칭찬을 받았어요.',tag:'피동문 被',key:'被',note:'被 + 행위자 + 동사 ▶ "~에 의해 ~당하다"'},
+  {zh:'我从来没想到他会有这么大的变化。',py:'Wǒ cónglái méi xiǎngdào tā huì yǒu zhème dà de biànhuà.',ko:'그가 이렇게 크게 변화할 것이라고는 생각해본 적이 없었어요.',tag:'부정 강조',key:'从来没',note:'从来没 + 동사 ▶ "지금까지 한 번도 ~한 적이 없다"'},
+  {zh:'除了运动以外，我还喜欢看书和听音乐。',py:'Chúle yùndòng yǐwài, wǒ hái xǐhuān kàn shū hé tīng yīnyuè.',ko:'운동 외에도 나는 독서와 음악 감상을 좋아해요.',tag:'범위 표현',key:'除了…以外',note:'除了 A 以外，还 B ▶ "A 외에도 B"'},
+  {zh:'环境的变化影响了很多动物的生存。',py:'Huánjìng de biànhuà yǐngxiǎngle hěn duō dòngwù de shēngcún.',ko:'환경의 변화가 많은 동물의 생존에 영향을 미쳤어요.',tag:'사회/환경',key:'影响',note:'影响 ▶ 명사·동사 양쪽으로 쓰임'},
+  {zh:'要想提高汉语水平，就要多说多练。',py:'Yào xiǎng tígāo Hànyǔ shuǐpíng, jiù yào duō shuō duō liàn.',ko:'중국어 실력을 향상시키려면 많이 말하고 많이 연습해야 해요.',tag:'방법 제안',key:'要想…就',note:'要想 A，就 B ▶ "A하려면 B해야 한다"'},
+  {zh:'她一边整理房间，一边听着收音机。',py:'Tā yībiān zhěnglǐ fángjiān, yībiān tīngzhe shōuyīnjī.',ko:'그녀는 방을 정리하면서 라디오를 듣고 있어요.',tag:'동시 행위',key:'一边…一边',note:'一边 A，一边 B ▶ "A하면서 B하다"'},
+  {zh:'我相信只要认真学习，就一定能成功。',py:'Wǒ xiāngxìn zhǐyào rènzhēn xuéxí, jiù yīdìng néng chénggōng.',ko:'열심히 공부하기만 하면 반드시 성공할 수 있다고 믿어요.',tag:'믿음/조건',key:'只要…就',note:'只要 A，就 B ▶ "A하기만 하면 B하다"'},
+  {zh:'他被公司派到上海去工作了。',py:'Tā bèi gōngsī pài dào Shànghǎi qù gōngzuò le.',ko:'그는 회사에 의해 상하이로 파견되어 일하게 됐어요.',tag:'피동문 응용',key:'被',note:'被 구문 응용: 被 + 주어 + 동사 + 결과'},
+];
+
+const F = [
+  {sent:'他___了很多经验，工作越来越好。',ko:'그는 많은 경험을 쌓아서 일이 점점 좋아지고 있어요.',choices:['积累','发现','使用','解决'],ans:'积累'},
+  {sent:'___他很努力，___没有通过考试。',ko:'비록 그는 열심히 했지만 시험을 통과하지 못했어요.',choices:['虽然/但是','因为/所以','如果/就','不但/而且'],ans:'虽然/但是',multi:true},
+  {sent:'这个计划___我们所有人，大家都要注意。',ko:'이 계획은 우리 모두에게 영향을 미치니 모두 주의해야 해요.',choices:['影响','决定','举行','满意'],ans:'影响'},
+  {sent:'你的汉语___越来越高了。',ko:'당신의 중국어 수준이 점점 높아지고 있어요.',choices:['水平','内容','关系','态度'],ans:'水平'},
+  {sent:'___天气好的话，我们就去爬山吧。',ko:'날씨가 좋으면 등산하러 가요.',choices:['如果','虽然','从来','继续'],ans:'如果'},
+  {sent:'他对这次比赛的结果非常___。',ko:'그는 이번 대회 결과에 매우 만족했어요.',choices:['满意','认真','整齐','复杂'],ans:'满意'},
+  {sent:'请你___一下这两个方案。',ko:'이 두 방안을 비교해서 말해 주세요.',choices:['比较','参加','了解','相信'],ans:'比较'},
+  {sent:'她___没迟到过，今天却来晚了。',ko:'그녀는 지금까지 지각한 적이 없는데 오늘은 늦게 왔어요.',choices:['从来','马上','差不多','继续'],ans:'从来'},
+  {sent:'明天我有一个重要的___，很紧张。',ko:'내일 중요한 면접이 있어서 매우 긴장돼요.',choices:['面试','成绩','历史','目的'],ans:'面试'},
+  {sent:'她的书___风吹走了。',ko:'그녀의 책이 바람에 날아갔어요.',choices:['被','让','叫','给'],ans:'被'},
+];
+
+// ═══════════════ STATE ═══════════════
+let pts=0,streak=0,right=0,wrong=0;
+let ratings={};
+let fcCards=[...W],fcIdx=0,fcFlipped_=false;
+let qt='zh2ko',quizW=null,quizDone=false;
+let fillIdx=0,fillDone=false;
+
+// ═══════════════ UTILS ═══════════════
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1500);
+}
+function addPts(n){
+  pts+=n;streak=n>0?streak+1:0;
+  document.getElementById('hPt').textContent=pts;
+  document.getElementById('hSt').textContent=streak;
+  refreshStats();
+}
+
+// ═══════════════ NAV ═══════════════
+function go(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  ['fc','quiz','sent','fill','wl','stat'].forEach((s,i)=>{
+    if(s===id) document.querySelectorAll('nav button')[i].classList.add('on');
+  });
+  if(id==='sent') buildSent();
+  if(id==='fill') buildFill();
+  if(id==='quiz') buildQuiz();
+  if(id==='wl') buildWL();
+  if(id==='stat') refreshStats();
+}
+
+// ═══════════════ FLASHCARD ═══════════════
+function buildCats(){
+  const cats=['전체',...new Set(W.map(w=>w.cat))];
+  document.getElementById('catRow').innerHTML=cats.map(c=>
+    `<button class="cchip ${c==='전체'?'on':''}" onclick="setCat('${c}',this)">${c}</button>`
+  ).join('');
+}
+function setCat(c,btn){
+  document.querySelectorAll('.cchip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  fcCards=c==='전체'?[...W]:W.filter(w=>w.cat===c);
+  fcIdx=0;fcFlipped_=false;
+  document.getElementById('cardInner').classList.remove('flip');
+  document.getElementById('fcRate').classList.remove('show');
+  renderFC();
+}
+function renderFC(){
+  const w=fcCards[fcIdx];if(!w)return;
+  document.getElementById('cardZh').textContent=w.zh;
+  const len=w.zh.replace(/[…]/g,'').length;
+  document.getElementById('cardZh').className='card-zh '+(len<=2?'sz1':len<=4?'sz2':'sz3');
+  document.getElementById('cardBadge').textContent=w.cat;
+  document.getElementById('cardKo').textContent=w.ko;
+  document.getElementById('cardPy').textContent=w.py;
+  let ex=w.ex;
+  if(w.key){
+    const parts=w.key.includes('…')?w.key.split('…'):[w.key];
+    parts.forEach(p=>{if(p)ex=ex.replaceAll(p,`<span class="ex-hl">${p}</span>`);});
+  }
+  document.getElementById('cardEx').innerHTML=ex;
+  document.getElementById('cardExko').textContent=w.exko;
+  const pct=Math.round(fcIdx/fcCards.length*100);
+  document.getElementById('pbarFill').style.width=pct+'%';
+  document.getElementById('fcProg').textContent=`${fcIdx+1} / ${fcCards.length}`;
+  fcFlipped_=false;
+  document.getElementById('cardInner').classList.remove('flip');
+  document.getElementById('fcRate').classList.remove('show');
+}
+function fcFlip(){
+  fcFlipped_=!fcFlipped_;
+  document.getElementById('cardInner').classList.toggle('flip',fcFlipped_);
+  if(fcFlipped_)document.getElementById('fcRate').classList.add('show');
+}
+function fcRate(good){
+  const i=W.indexOf(fcCards[fcIdx]);
+  if(good){ratings[i]=ratings[i]==='ok'?'perfect':'ok';addPts(10);right++;toast('✅ +10 포인트!');}
+  else{ratings[i]='learn';wrong++;toast('📖 다시 복습해요!');}
+  fcIdx=(fcIdx+1)%fcCards.length;
+  setTimeout(renderFC,280);
+}
+
+// ═══════════════ QUIZ ═══════════════
+function setQT(t,btn){
+  qt=t;
+  document.querySelectorAll('.qtype-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');buildQuiz();
+}
+function buildQuiz(){
+  quizDone=false;
+  const box=document.getElementById('quizBox');
+  if(qt==='sent'){
+    // sentence blank — use접속사 words
+    const pool=W.filter(w=>w.cat==='접속사');
+    quizW=pool[Math.floor(Math.random()*pool.length)];
+    let key=quizW.key||quizW.zh;
+    const blanked=quizW.ex.replace(key,`<span style="color:var(--red);font-weight:900;">＿＿＿</span>`);
+    const wrongs=W.filter(w=>w!==quizW&&w.cat==='접속사').sort(()=>Math.random()-0.5).slice(0,3).map(w=>w.zh);
+    const opts=[quizW.zh,...wrongs].sort(()=>Math.random()-0.5);
+    box.innerHTML=`
+      <div class="q-label">빈칸에 알맞은 단어를 고르세요</div>
+      <div class="q-word sent" style="margin-bottom:8px;">${blanked}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">${quizW.exko}</div>
+      <div class="q-opts">${opts.map(o=>`<button class="q-opt" onclick="checkQ(this,'${esc(o)}','${esc(quizW.zh)}')">${o}</button>`).join('')}</div>
+      <div class="q-fb" id="qFB"></div>
+      <button class="btn-next" id="qNext" onclick="buildQuiz()">다음 문제 →</button>`;
+    return;
+  }
+  const pool=W.filter(w=>w.cat!=='접속사');
+  quizW=pool[Math.floor(Math.random()*pool.length)];
+  let label,mainHTML,correct,optClass,getOpt;
+  if(qt==='zh2ko'){
+    label='이 한자의 뜻은?';
+    const l=quizW.zh.replace(/[…]/g,'').length;
+    mainHTML=`<div class="q-word ${l<=2?'big':'med'}">${quizW.zh}</div>`;
+    correct=quizW.ko;getOpt=w=>w.ko;optClass='ko-opt';
+  } else {
+    label='이 뜻에 맞는 한자는?';
+    mainHTML=`<div class="q-word ko">${quizW.ko}</div>`;
+    correct=quizW.zh;getOpt=w=>w.zh;optClass='';
+  }
+  const wrongs=pool.filter(w=>w!==quizW).sort(()=>Math.random()-0.5).slice(0,3).map(getOpt);
+  const opts=[correct,...wrongs].sort(()=>Math.random()-0.5);
+  box.innerHTML=`
+    <div class="q-label">${label}</div>
+    ${mainHTML}
+    <div class="q-opts">${opts.map(o=>`<button class="q-opt ${optClass}" onclick="checkQ(this,'${esc(o)}','${esc(correct)}')">${o}</button>`).join('')}</div>
+    <div class="q-fb" id="qFB"></div>
+    <button class="btn-next" id="qNext" onclick="buildQuiz()">다음 문제 →</button>`;
+}
+function esc(s){return s.replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+function checkQ(btn,chosen,correct){
+  if(quizDone)return;quizDone=true;
+  document.querySelectorAll('.q-opt').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('ok');});
+  const fb=document.getElementById('qFB');
+  if(chosen===correct){
+    btn.classList.add('ok');fb.textContent='🎉 정답! +20 포인트';fb.className='q-fb show ok';
+    addPts(20);right++;
+  } else {
+    btn.classList.add('no');
+    let msg=`❌ 오답. 정답: ${correct}`;
+    if(qt==='zh2ko'&&quizW)msg+=`  (${quizW.py})`;
+    fb.textContent=msg;fb.className='q-fb show no';wrong++;
+  }
+  document.getElementById('qNext').classList.add('show');
+}
+
+// ═══════════════ SENTENCES ═══════════════
+function buildSent(){
+  document.getElementById('sentList').innerHTML=S.map((s,i)=>{
+    let zh=s.zh;
+    if(s.key){
+      const parts=s.key.split('…');
+      if(parts.length>1)parts.forEach(p=>{if(p)zh=zh.replaceAll(p,`<span class="hl">${p}</span>`);});
+      else zh=zh.replaceAll(s.key,`<span class="hl">${s.key}</span>`);
+    }
+    return `<div class="sent-card">
+      <span class="sent-tag">${s.tag}</span>
+      <div class="sent-zh" style="margin-top:10px">${zh}</div>
+      <div class="sent-note">💡 ${s.note}</div>
+      <div class="sent-ko hide" id="sk${i}" onclick="this.classList.toggle('hide')">${s.ko}</div>
+      <div class="reveal-hint" onclick="document.getElementById('sk${i}').classList.toggle('hide')">👆 탭해서 해석 보기/숨기기</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════ FILL ═══════════════
+function buildFill(){
+  fillDone=false;
+  const q=F[fillIdx%F.length];
+  let sentHTML=q.sent;
+  if(q.multi){
+    let tmp=q.sent,pi=0;
+    while(tmp.includes('___')){tmp=tmp.replace('___',`<span class="fill-blank" id="blk${pi}">___</span>`);pi++;}
+    sentHTML=tmp;
+  } else {
+    sentHTML=q.sent.replace('___',`<span class="fill-blank" id="blk0">___</span>`);
+  }
+  document.getElementById('fillBox').innerHTML=`
+    <div class="fill-box">
+      <div class="fill-num">문제 ${(fillIdx%F.length)+1} / ${F.length}</div>
+      <div class="fill-sent">${sentHTML}</div>
+      <div class="fill-ko">${q.ko}</div>
+      <div class="fill-choices">${q.choices.map(c=>`<button class="fill-opt" onclick="checkFill(this,'${esc(c)}','${esc(q.ans)}',${!!q.multi})">${c}</button>`).join('')}</div>
+      <div class="fill-fb" id="fillFB"></div>
+      <button class="btn-next" id="fillNext" style="display:none;margin-top:14px;" onclick="nextFill()">다음 문제 →</button>
+    </div>`;
+}
+function checkFill(btn,chosen,ans,multi){
+  if(fillDone)return;fillDone=true;
+  document.querySelectorAll('.fill-opt').forEach(b=>b.disabled=true);
+  const blk0=document.getElementById('blk0');
+  const blk1=document.getElementById('blk1');
+  const fb=document.getElementById('fillFB');
+  const isOk=chosen===ans;
+  if(multi){
+    const parts=ans.split('/');
+    if(blk0)blk0.textContent=parts[0]||'';
+    if(blk1)blk1.textContent=parts[1]||'';
+  } else {
+    if(blk0)blk0.textContent=ans;
+  }
+  document.querySelectorAll('.fill-opt').forEach(b=>{
+    const disp=multi?b.textContent:b.textContent;
+    if(b.textContent===ans)b.classList.add('ok');
+  });
+  if(isOk){
+    btn.classList.add('ok');fb.textContent='✅ 정답! +15 포인트';fb.className='fill-fb show ok';
+    addPts(15);right++;
+  } else {
+    btn.classList.add('no');fb.textContent=`❌ 정답: ${ans}`;fb.className='fill-fb show no';wrong++;
+  }
+  document.getElementById('fillNext').style.display='block';
+}
+function nextFill(){fillIdx++;buildFill();}
+
+// ═══════════════ WORD LIST ═══════════════
+function buildWL(q=''){
+  const list=q?W.filter(w=>w.zh.includes(q)||w.ko.includes(q)||w.py.toLowerCase().includes(q.toLowerCase())):W;
+  document.getElementById('wordGrid').innerHTML=list.map(w=>`
+    <div class="wtile">
+      <div class="wtile-zh">${w.zh}</div>
+      <div class="wtile-py">${w.py}</div>
+      <div class="wtile-ko">${w.ko}</div>
+      <div class="wtile-cat">${w.cat}</div>
+    </div>`).join('');
+}
+function filterWL(){buildWL(document.getElementById('searchInput').value);}
+
+// ═══════════════ STATS ═══════════════
+function refreshStats(){
+  const tot=right+wrong;
+  document.getElementById('s1').textContent=right;
+  document.getElementById('s2').textContent=wrong;
+  document.getElementById('s3').textContent=tot?Math.round(right/tot*100)+'%':'0%';
+  document.getElementById('s4').textContent=pts;
+  const perf=Object.values(ratings).filter(v=>v==='perfect').length;
+  const ok=Object.values(ratings).filter(v=>v==='ok').length;
+  const n=W.length;
+  const p1=Math.round(perf/n*100),p2=Math.round(ok/n*100),p3=100-p1-p2;
+  ['mp1','mp2','mp3'].forEach((id,i)=>document.getElementById(id).textContent=[p1,p2,p3][i]+'%');
+  document.getElementById('mf1').style.width=p1+'%';
+  document.getElementById('mf2').style.width=p2+'%';
+  document.getElementById('mf3').style.width=p3+'%';
+}
+function doReset(){
+  if(!confirm('통계를 초기화할까요?'))return;
+  pts=0;streak=0;right=0;wrong=0;ratings={};
+  document.getElementById('hPt').textContent=0;
+  document.getElementById('hSt').textContent=0;
+  refreshStats();toast('🔄 초기화 완료!');
+}
+
+// ═══════════════ INIT ═══════════════
+buildCats();renderFC();buildWL();
+</script>
+</body>
+</html>
